@@ -102,7 +102,8 @@ public class LotteryCommand extends AbstractCommand
                                 "You are nolonger in the lottery.");
                         player.sendMessage(ChatColor.RED +
                                 "You received your 2,000 Tregs back");
-                        tregmine.getServer().broadcastMessage(player.getChatName() + ChatColor.RED + " withdrew themself from the lottery"/* + ChatColor.RED + " - " + ChatColor.GOLD + "Amount in lottery: " + format.format(amount) + " Tregs!" */);
+                        tregmine.getServer().broadcastMessage(player.getChatName() + 
+                                ChatColor.RED + " withdrew themself from the lottery");
                     }
                 }
 
@@ -111,19 +112,13 @@ public class LotteryCommand extends AbstractCommand
                         if (size >= 2) {
                             Random random = new Random();
                             String randomPlayer = lottery.get(random.nextInt(size));
-                            TregminePlayer winner = tregmine.getPlayer(randomPlayer);
-                            if (winner == null) {
-                                player.sendMessage(ChatColor.RED + randomPlayer + " won, " +
-                                    "but is no longer online. Try again.");
-                                return true;
-                            }
-
+                            TregminePlayer winner = tregmine.getPlayerOffline(randomPlayer);
                             wallet.add(winner, amount);
                             tregmine.getServer().broadcastMessage(
-                                    winner.getChatName() + ChatColor.DARK_AQUA +
-                                    " won the lottery! " + ChatColor.RED + " - " +
-                                    ChatColor.GOLD + format.format(amount) +
-                                    " Tregs!");
+                                    winner.getRank().getColor() + winner.getRealName()
+                                    + ChatColor.DARK_AQUA + " won the lottery! " + 
+                                            ChatColor.RED + " - " + ChatColor.GOLD + 
+                                            format.format(amount) + " Tregs!");
                             lottery.clear();
                             player.sendMessage(ChatColor.GREEN +
                                     "Lottery has been succesfully cleared.");
